@@ -101,6 +101,10 @@
 ; Types
 (primitive_type) @type.builtin
 
+; Field is a primitive type in Noir but parses as type_identifier
+((type_identifier) @type.builtin
+  (#eq? @type.builtin "Field"))
+
 (type_identifier) @type
 
 (scoped_type_identifier
