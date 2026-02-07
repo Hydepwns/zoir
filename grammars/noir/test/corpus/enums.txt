@@ -1,0 +1,137 @@
+==================
+Basic enum
+==================
+
+enum Color { Red, Green, Blue }
+
+---
+
+(source_file
+  (enum_definition
+    name: (type_identifier)
+    (enum_body
+      (enum_variant name: (identifier))
+      (enum_variant name: (identifier))
+      (enum_variant name: (identifier)))))
+
+==================
+Public enum
+==================
+
+pub enum Visibility { Public, Private }
+
+---
+
+(source_file
+  (enum_definition
+    (visibility_modifier)
+    name: (type_identifier)
+    (enum_body
+      (enum_variant name: (identifier))
+      (enum_variant name: (identifier)))))
+
+==================
+Generic enum
+==================
+
+enum Option<T> { Some(T), None }
+
+---
+
+(source_file
+  (enum_definition
+    name: (type_identifier)
+    (type_parameters
+      (type_parameter name: (type_identifier)))
+    (enum_body
+      (enum_variant
+        name: (identifier)
+        (enum_tuple_fields (type_identifier)))
+      (enum_variant name: (identifier)))))
+
+==================
+Enum with tuple variant
+==================
+
+enum Result<T, E> { Ok(T), Err(E) }
+
+---
+
+(source_file
+  (enum_definition
+    name: (type_identifier)
+    (type_parameters
+      (type_parameter name: (type_identifier))
+      (type_parameter name: (type_identifier)))
+    (enum_body
+      (enum_variant
+        name: (identifier)
+        (enum_tuple_fields (type_identifier)))
+      (enum_variant
+        name: (identifier)
+        (enum_tuple_fields (type_identifier))))))
+
+==================
+Enum with struct variant
+==================
+
+enum Message {
+    Quit,
+    Move { x: u32, y: u32 },
+}
+
+---
+
+(source_file
+  (enum_definition
+    name: (type_identifier)
+    (enum_body
+      (enum_variant name: (identifier))
+      (enum_variant
+        name: (identifier)
+        (enum_struct_fields
+          (struct_field name: (identifier) type: (primitive_type))
+          (struct_field name: (identifier) type: (primitive_type)))))))
+
+==================
+Enum with attribute
+==================
+
+#[derive(Eq)]
+enum Status { Active, Inactive }
+
+---
+
+(source_file
+  (enum_definition
+    (attribute
+      (attribute_item (identifier)
+        (attribute_arguments (type_identifier))))
+    name: (type_identifier)
+    (enum_body
+      (enum_variant name: (identifier))
+      (enum_variant name: (identifier)))))
+
+==================
+Enum with multiple tuple fields
+==================
+
+enum Point { TwoD(u32, u32), ThreeD(u32, u32, u32) }
+
+---
+
+(source_file
+  (enum_definition
+    name: (type_identifier)
+    (enum_body
+      (enum_variant
+        name: (identifier)
+        (enum_tuple_fields
+          (primitive_type)
+          (primitive_type)))
+      (enum_variant
+        name: (identifier)
+        (enum_tuple_fields
+          (primitive_type)
+          (primitive_type)
+          (primitive_type))))))

@@ -7,6 +7,7 @@
   "continue"
   "crate"
   "else"
+  "enum"
   "fn"
   "for"
   "global"
@@ -170,9 +171,15 @@
 (field_pattern
   (identifier) @property)
 
-; Struct and trait definitions
+; Struct, enum, and trait definitions
 (struct_definition
   name: (type_identifier) @type.definition)
+
+(enum_definition
+  name: (type_identifier) @type.definition)
+
+(enum_variant
+  name: (identifier) @constant)
 
 (trait_definition
   name: (type_identifier) @type.definition)

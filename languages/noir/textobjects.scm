@@ -10,6 +10,12 @@
 (struct_definition
   (struct_body) @class.inside)
 
+; Enum text objects
+(enum_definition) @class.around
+
+(enum_definition
+  (enum_body) @class.inside)
+
 ; Trait text objects
 (trait_definition) @class.around
 

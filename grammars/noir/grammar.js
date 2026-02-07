@@ -45,6 +45,7 @@ module.exports = grammar({
       choice(
         $.function_definition,
         $.struct_definition,
+        $.enum_definition,
         $.impl_block,
         $.trait_definition,
         $.type_alias,
@@ -60,7 +61,10 @@ module.exports = grammar({
     attribute_item: ($) =>
       seq($.identifier, optional(seq("(", optional($.attribute_arguments), ")"))),
 
-    attribute_arguments: ($) => seq($._expression, repeat(seq(",", $._expression)), optional(",")),
+    attribute_arguments: ($) => {
+      const arg = choice($._expression, $.type_identifier);
+      return seq(arg, repeat(seq(",", arg)), optional(","));
+    },
 
     // Function definition
     function_definition: ($) =>
@@ -114,6 +118,34 @@ module.exports = grammar({
         ":",
         field("type", $._type),
       ),
+
+    // Enum definition
+    enum_definition: ($) =>
+      seq(
+        repeat($.attribute),
+        optional($.visibility_modifier),
+        "enum",
+        field("name", $.type_identifier),
+        optional($.type_parameters),
+        optional($.where_clause),
+        $.enum_body,
+      ),
+
+    enum_body: ($) =>
+      seq("{", optional(seq($.enum_variant, repeat(seq(",", $.enum_variant)), optional(","))), "}"),
+
+    enum_variant: ($) =>
+      seq(
+        repeat($.attribute),
+        field("name", $.identifier),
+        optional(choice($.enum_tuple_fields, $.enum_struct_fields)),
+      ),
+
+    enum_tuple_fields: ($) =>
+      seq("(", optional(seq($._type, repeat(seq(",", $._type)), optional(","))), ")"),
+
+    enum_struct_fields: ($) =>
+      seq("{", optional(seq($.struct_field, repeat(seq(",", $.struct_field)), optional(","))), "}"),
 
     // Impl block
     impl_block: ($) =>

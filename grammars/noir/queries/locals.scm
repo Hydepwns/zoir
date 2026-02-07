@@ -10,6 +10,7 @@
 (impl_block) @local.scope
 (trait_definition) @local.scope
 (struct_definition) @local.scope
+(enum_definition) @local.scope
 (module_declaration) @local.scope
 
 ; Definitions
@@ -40,6 +41,12 @@
 
 (struct_definition
   name: (type_identifier) @local.definition)
+
+(enum_definition
+  name: (type_identifier) @local.definition)
+
+(enum_variant
+  name: (identifier) @local.definition)
 
 (trait_definition
   name: (type_identifier) @local.definition)

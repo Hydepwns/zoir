@@ -20,6 +20,16 @@
   (visibility_modifier)? @context
   name: (identifier) @name) @item
 
+; Enums
+(enum_definition
+  (visibility_modifier)? @context
+  "enum" @context
+  name: (type_identifier) @name) @item
+
+; Enum variants
+(enum_variant
+  name: (identifier) @name) @item
+
 ; Traits
 (trait_definition
   (visibility_modifier)? @context
