@@ -18,7 +18,6 @@
   "match"
   "mod"
   "mut"
-  "pub"
   "return"
   "self"
   "Self"
@@ -32,6 +31,8 @@
   "where"
   "while"
 ] @keyword
+
+(visibility_modifier) @keyword
 
 [
   "assert"
@@ -103,7 +104,7 @@
 (type_identifier) @type
 
 (scoped_type_identifier
-  name: (type_identifier) @type)
+  (type_identifier) @type)
 
 (generic_type
   (type_identifier) @type)
@@ -120,7 +121,7 @@
 
 (call_expression
   function: (scoped_identifier
-    name: (identifier) @function.call))
+    (identifier) @function.call))
 
 (method_call_expression
   method: (identifier) @function.method)
@@ -130,7 +131,7 @@
 
 (generic_function
   (scoped_identifier
-    name: (identifier) @function.call))
+    (identifier) @function.call))
 
 ; Variables and parameters
 (parameter
@@ -185,11 +186,13 @@
 (use_tree
   (identifier) @module)
 
-(use_tree
+(use_as_clause
+  (identifier) @module)
+
+(use_as_clause
   (scoped_identifier
-    name: (identifier) @type)
-  "as"
-  (identifier) @type)
+    (identifier) @module)
+  (identifier) @module)
 
 ; Attributes
 (attribute) @attribute

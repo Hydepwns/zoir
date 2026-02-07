@@ -1,0 +1,140 @@
+==================
+Identifier pattern
+==================
+
+fn patterns() {
+    let x = 1;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (let_statement
+        pattern: (pattern (identifier))
+        value: (integer_literal)))))
+
+==================
+Wildcard pattern
+==================
+
+fn wildcards() {
+    let _ = ignored();
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (let_statement
+        pattern: (pattern (wildcard_pattern))
+        value: (call_expression function: (identifier))))))
+
+==================
+Tuple pattern
+==================
+
+fn tuple_destruct() {
+    let (a, b) = pair;
+    let (x, _, z) = triple;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (let_statement
+        pattern: (pattern
+          (tuple_pattern
+            (pattern (identifier))
+            (pattern (identifier))))
+        value: (identifier))
+      (let_statement
+        pattern: (pattern
+          (tuple_pattern
+            (pattern (identifier))
+            (pattern (wildcard_pattern))
+            (pattern (identifier))))
+        value: (identifier)))))
+
+==================
+Struct pattern
+==================
+
+fn struct_destruct() {
+    let Point { x, y } = point;
+    let Point { x: a, y: b } = point;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (let_statement
+        pattern: (pattern
+          (struct_pattern
+            (type_identifier)
+            (field_pattern (identifier))
+            (field_pattern (identifier))))
+        value: (identifier))
+      (let_statement
+        pattern: (pattern
+          (struct_pattern
+            (type_identifier)
+            (field_pattern (identifier) (pattern (identifier)))
+            (field_pattern (identifier) (pattern (identifier)))))
+        value: (identifier)))))
+
+==================
+Mut pattern
+==================
+
+fn mutable() {
+    let mut x = 1;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (let_statement
+        pattern: (pattern (mut_pattern (pattern (identifier))))
+        value: (integer_literal)))))
+
+==================
+Reference pattern
+==================
+
+fn ref_pattern(r: &u32) {
+    let &x = r;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters
+      (parameter
+        (pattern (identifier))
+        (reference_type (primitive_type))))
+    (block
+      (let_statement
+        pattern: (pattern
+          (reference_pattern (pattern (identifier))))
+        value: (identifier)))))

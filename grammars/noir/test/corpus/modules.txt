@@ -1,0 +1,165 @@
+==================
+Module declaration
+==================
+
+mod foo;
+
+---
+
+(source_file
+  (module_declaration
+    name: (identifier)))
+
+==================
+Inline module
+==================
+
+mod inner {
+    fn bar() {}
+}
+
+---
+
+(source_file
+  (module_declaration
+    name: (identifier)
+    (function_definition
+      name: (identifier)
+      (parameters)
+      (block))))
+
+==================
+Public module
+==================
+
+pub mod public_mod;
+
+---
+
+(source_file
+  (module_declaration
+    (visibility_modifier)
+    name: (identifier)))
+
+==================
+Use declaration
+==================
+
+use std::hash;
+
+---
+
+(source_file
+  (use_declaration
+    (use_tree
+      (scoped_identifier (identifier) (identifier)))))
+
+==================
+Use with alias
+==================
+
+use std::hash as h;
+
+---
+
+(source_file
+  (use_declaration
+    (use_tree
+      (use_as_clause
+        (scoped_identifier (identifier) (identifier))
+        (identifier)))))
+
+==================
+Use nested path
+==================
+
+use crate::foo::bar;
+
+---
+
+(source_file
+  (use_declaration
+    (use_tree
+      (scoped_identifier
+        (scoped_identifier (identifier))
+        (identifier)))))
+
+==================
+Use wildcard
+==================
+
+use crate::utils::*;
+
+---
+
+(source_file
+  (use_declaration
+    (use_tree
+      (use_wildcard
+        (scoped_identifier (identifier))))))
+
+==================
+Use grouped imports
+==================
+
+use std::{hash, println};
+
+---
+
+(source_file
+  (use_declaration
+    (use_tree
+      (scoped_use_list
+        (identifier)
+        (use_list
+          (use_tree (identifier))
+          (use_tree (identifier)))))))
+
+==================
+Use simple identifier
+==================
+
+use foo;
+
+---
+
+(source_file
+  (use_declaration
+    (use_tree
+      (identifier))))
+
+==================
+Scoped identifier
+==================
+
+fn scoped() {
+    std::hash::hash(x);
+    crate::foo::bar();
+    super::parent();
+    self::local();
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement
+        (call_expression
+          function: (scoped_identifier
+            (scoped_identifier (identifier) (identifier))
+            (identifier))
+          (identifier)))
+      (expression_statement
+        (call_expression
+          function: (scoped_identifier
+            (scoped_identifier (identifier))
+            (identifier))))
+      (expression_statement
+        (call_expression
+          function: (scoped_identifier (identifier))))
+      (expression_statement
+        (call_expression
+          function: (scoped_identifier (identifier)))))))

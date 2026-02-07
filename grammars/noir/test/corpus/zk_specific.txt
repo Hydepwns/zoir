@@ -1,0 +1,172 @@
+==================
+Assert statement
+==================
+
+fn assertions() {
+    assert(x == y);
+    assert(condition, "error message");
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (assert_statement
+        (binary_expression left: (identifier) right: (identifier)))
+      (assert_statement
+        (identifier)
+        (string_literal)))))
+
+==================
+Assert equals
+==================
+
+fn assert_eq_test() {
+    assert_eq(a, b);
+    assert_eq(x, y, "not equal");
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (assert_statement (identifier) (identifier))
+      (assert_statement (identifier) (identifier) (string_literal)))))
+
+==================
+Constrain statement
+==================
+
+fn constraints() {
+    constrain x == y;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (constrain_statement
+        (binary_expression left: (identifier) right: (identifier))))))
+
+==================
+Comptime expression
+==================
+
+fn comptime_block() {
+    comptime {
+        let x = 1;
+    };
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement
+        (comptime_expression
+          (block
+            (let_statement pattern: (pattern (identifier)) value: (integer_literal))))))))
+
+==================
+Unsafe expression
+==================
+
+fn unsafe_block() {
+    unsafe {
+        dangerous();
+    };
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement
+        (unsafe_expression
+          (block
+            (expression_statement (call_expression function: (identifier)))))))))
+
+==================
+Quote expression
+==================
+
+fn quoted() {
+    quote {
+        fn foo() {}
+    };
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement
+        (quote_expression
+          (block
+            (function_definition
+              name: (identifier)
+              (parameters)
+              (block))))))))
+
+==================
+Global declaration
+==================
+
+global CONSTANT: u32 = 42;
+
+---
+
+(source_file
+  (global_declaration
+    name: (identifier)
+    type: (primitive_type)
+    value: (integer_literal)))
+
+==================
+Comptime global
+==================
+
+comptime global SIZE: u32 = 10;
+
+---
+
+(source_file
+  (global_declaration
+    name: (identifier)
+    type: (primitive_type)
+    value: (integer_literal)))
+
+==================
+Recursive attribute
+==================
+
+#[recursive]
+fn recursive_proof() {}
+
+---
+
+(source_file
+  (function_definition
+    (attribute
+      (attribute_item (identifier)))
+    name: (identifier)
+    (parameters)
+    (block)))

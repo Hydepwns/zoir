@@ -1,0 +1,109 @@
+==================
+Integer literals
+==================
+
+fn integers() {
+    0;
+    42;
+    1_000_000;
+    0xff;
+    0xFF;
+    0b1010;
+    0o777;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (integer_literal))
+      (expression_statement (integer_literal))
+      (expression_statement (integer_literal))
+      (expression_statement (integer_literal))
+      (expression_statement (integer_literal))
+      (expression_statement (integer_literal))
+      (expression_statement (integer_literal)))))
+
+==================
+Boolean literals
+==================
+
+fn booleans() {
+    true;
+    false;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (boolean_literal))
+      (expression_statement (boolean_literal)))))
+
+==================
+String literal
+==================
+
+fn strings() {
+    "hello world";
+    "with\nnewline";
+    "with\tescape";
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (string_literal))
+      (expression_statement (string_literal (escape_sequence)))
+      (expression_statement (string_literal (escape_sequence))))))
+
+==================
+Format string literal
+==================
+
+fn format_strings() {
+    f"value: {x}";
+    f"sum: {a + b}";
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement
+        (format_string_literal
+          (interpolation (identifier))))
+      (expression_statement
+        (format_string_literal
+          (interpolation
+            (binary_expression left: (identifier) right: (identifier))))))))
+
+==================
+Unit expression
+==================
+
+fn unit() {
+    ();
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (unit_expression)))))

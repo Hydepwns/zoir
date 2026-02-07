@@ -18,7 +18,6 @@
   "match"
   "mod"
   "mut"
-  "pub"
   "return"
   "self"
   "Self"
@@ -33,12 +32,14 @@
   "while"
 ] @keyword
 
+(visibility_modifier) @keyword
+
 [
   "assert"
   "assert_eq"
-] @keyword
+] @keyword.control
 
-"quote" @keyword
+"quote" @keyword.special
 
 ; Operators
 [
@@ -93,15 +94,17 @@
   "]"
   "{"
   "}"
+  "<"
+  ">"
 ] @punctuation.bracket
 
 ; Types
-(primitive_type) @type
+(primitive_type) @type.builtin
 
 (type_identifier) @type
 
 (scoped_type_identifier
-  name: (type_identifier) @type)
+  (type_identifier) @type)
 
 (generic_type
   (type_identifier) @type)
@@ -114,29 +117,29 @@
   name: (identifier) @function)
 
 (call_expression
-  function: (identifier) @function)
+  function: (identifier) @function.call)
 
 (call_expression
   function: (scoped_identifier
-    name: (identifier) @function))
+    (identifier) @function.call))
 
 (method_call_expression
   method: (identifier) @function.method)
 
 (generic_function
-  (identifier) @function)
+  (identifier) @function.call)
 
 (generic_function
   (scoped_identifier
-    name: (identifier) @function))
+    (identifier) @function.call))
 
 ; Variables and parameters
 (parameter
   (pattern
     (identifier) @variable.parameter))
 
-(self_parameter) @variable.special
-(self_expression) @variable.special
+(self_parameter) @variable.builtin
+(self_expression) @variable.builtin
 
 (let_statement
   pattern: (pattern
@@ -165,23 +168,31 @@
 
 ; Struct and trait definitions
 (struct_definition
-  name: (type_identifier) @type)
+  name: (type_identifier) @type.definition)
 
 (trait_definition
-  name: (type_identifier) @type)
+  name: (type_identifier) @type.definition)
 
 (impl_block
   type: (type_identifier) @type)
 
 (type_alias
-  name: (type_identifier) @type)
+  name: (type_identifier) @type.definition)
 
 ; Module and use
 (module_declaration
-  name: (identifier) @keyword)
+  name: (identifier) @module)
 
 (use_tree
-  (identifier) @keyword)
+  (identifier) @module)
+
+(use_as_clause
+  (identifier) @module)
+
+(use_as_clause
+  (scoped_identifier
+    (identifier) @module)
+  (identifier) @module)
 
 ; Attributes
 (attribute) @attribute
@@ -194,9 +205,13 @@
 
 (string_literal) @string
 
-(format_string_literal) @string
+(format_string_literal) @string.special
 
 (escape_sequence) @string.escape
+
+(interpolation
+  "{" @punctuation.special
+  "}" @punctuation.special)
 
 (boolean_literal) @boolean
 
@@ -207,14 +222,17 @@
 
 ; Global
 (global_declaration
-  name: (identifier) @variable)
+  name: (identifier) @variable.global)
 
 ; Type parameters
 (type_parameter
-  name: (type_identifier) @type)
+  name: (type_identifier) @type.parameter)
 
 (const_parameter
   (identifier) @variable.parameter)
 
 ; Wildcards
-(wildcard_pattern) @variable.special
+(wildcard_pattern) @variable.builtin
+
+; Error
+(ERROR) @error

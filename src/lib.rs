@@ -13,7 +13,10 @@ impl ZoirExtension {
         language_server_id: &LanguageServerId,
         worktree: &Worktree,
     ) -> Result<String> {
+        let (platform, _arch) = zed::current_platform();
+
         // Try PATH first (respects noirup installations)
+        // On Windows, also check for nargo.exe
         if let Some(path) = worktree.which("nargo") {
             return Ok(path);
         }
@@ -23,6 +26,16 @@ impl ZoirExtension {
             if fs::metadata(path).is_ok() {
                 return Ok(path.clone());
             }
+        }
+
+        // Windows doesn't have pre-built binaries from noir-lang
+        if platform == zed::Os::Windows {
+            return Err(
+                "Noir does not provide pre-built Windows binaries. \
+                Please build nargo from source and add it to your PATH: \
+                https://noir-lang.org/docs/getting_started/installation/"
+                    .to_string(),
+            );
         }
 
         // Download from GitHub releases

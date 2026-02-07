@@ -1,0 +1,316 @@
+==================
+Binary expressions
+==================
+
+fn binary() {
+    1 + 2;
+    3 - 4;
+    5 * 6;
+    7 / 8;
+    9 % 10;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal)))
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal)))
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal)))
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal)))
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal))))))
+
+==================
+Comparison expressions
+==================
+
+fn compare() {
+    1 == 2;
+    1 != 2;
+    1 < 2;
+    1 > 2;
+    1 <= 2;
+    1 >= 2;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal)))
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal)))
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal)))
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal)))
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal)))
+      (expression_statement (binary_expression left: (integer_literal) right: (integer_literal))))))
+
+==================
+Logical expressions
+==================
+
+fn logic() {
+    true && false;
+    true || false;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (binary_expression left: (boolean_literal) right: (boolean_literal)))
+      (expression_statement (binary_expression left: (boolean_literal) right: (boolean_literal))))))
+
+==================
+Unary expressions
+==================
+
+fn unary() {
+    -x;
+    !flag;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (unary_expression (identifier)))
+      (expression_statement (unary_expression (identifier))))))
+
+==================
+Call expression
+==================
+
+fn calls() {
+    foo();
+    bar(1, 2);
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (call_expression function: (identifier)))
+      (expression_statement (call_expression function: (identifier) (integer_literal) (integer_literal))))))
+
+==================
+Method call expression
+==================
+
+fn methods() {
+    x.foo();
+    x.bar(1);
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (method_call_expression receiver: (identifier) method: (identifier)))
+      (expression_statement (method_call_expression receiver: (identifier) method: (identifier) (integer_literal))))))
+
+==================
+Field expression
+==================
+
+fn fields() {
+    point.x;
+    tuple.0;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (field_expression value: (identifier) field: (identifier)))
+      (expression_statement (field_expression value: (identifier) field: (integer_literal))))))
+
+==================
+Index expression
+==================
+
+fn index() {
+    arr[0];
+    arr[i];
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (index_expression value: (identifier) index: (integer_literal)))
+      (expression_statement (index_expression value: (identifier) index: (identifier))))))
+
+==================
+Array expression
+==================
+
+fn arrays() {
+    [1, 2, 3];
+    [0; 10];
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (array_expression (integer_literal) (integer_literal) (integer_literal)))
+      (expression_statement (array_expression (integer_literal) (integer_literal))))))
+
+==================
+Tuple expression
+==================
+
+fn tuples() {
+    (1, 2);
+    (a, b, c);
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (tuple_expression (integer_literal) (integer_literal)))
+      (expression_statement (tuple_expression (identifier) (identifier) (identifier))))))
+
+==================
+Struct expression
+==================
+
+fn structs() {
+    Point { x: 1, y: 2 };
+    Point { x, y };
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement
+        (struct_expression
+          name: (type_identifier)
+          (field_initializer (identifier) (integer_literal))
+          (field_initializer (identifier) (integer_literal))))
+      (expression_statement
+        (struct_expression
+          name: (type_identifier)
+          (field_initializer (identifier))
+          (field_initializer (identifier)))))))
+
+==================
+Closure expression
+==================
+
+fn closures() {
+    |x| { x + 1 };
+    |x: u32, y: u32| -> u32 { x + y };
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement
+        (closure_expression
+          (closure_parameter (pattern (identifier)))
+          (block (binary_expression left: (identifier) right: (integer_literal)))))
+      (expression_statement
+        (closure_expression
+          (closure_parameter (pattern (identifier)) (primitive_type))
+          (closure_parameter (pattern (identifier)) (primitive_type))
+          (primitive_type)
+          (block (binary_expression left: (identifier) right: (identifier))))))))
+
+==================
+Reference and dereference
+==================
+
+fn refs() {
+    &x;
+    &mut x;
+    *ptr;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (unary_expression (identifier)))
+      (expression_statement (unary_expression (identifier)))
+      (expression_statement (unary_expression (identifier))))))
+
+==================
+Range expression
+==================
+
+fn ranges() {
+    0..10;
+    start..end;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (range_expression (integer_literal) (integer_literal)))
+      (expression_statement (range_expression (identifier) (identifier))))))
+
+==================
+Cast expression
+==================
+
+fn casts() {
+    x as u32;
+    y as bool;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (cast_expression (identifier) (primitive_type)))
+      (expression_statement (cast_expression (identifier) (primitive_type))))))

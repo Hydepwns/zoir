@@ -1,0 +1,209 @@
+==================
+Let statement
+==================
+
+fn lets() {
+    let x = 1;
+    let y: u32 = 2;
+    let mut z = 3;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (let_statement pattern: (pattern (identifier)) value: (integer_literal))
+      (let_statement pattern: (pattern (identifier)) type: (primitive_type) value: (integer_literal))
+      (let_statement pattern: (pattern (identifier)) value: (integer_literal)))))
+
+==================
+Comptime let
+==================
+
+fn comptime_let() {
+    comptime let x = 1;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (let_statement pattern: (pattern (identifier)) value: (integer_literal)))))
+
+==================
+For statement
+==================
+
+fn for_loop() {
+    for i in 0..10 {
+        x;
+    }
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (for_statement
+        pattern: (pattern (identifier))
+        iterator: (range_expression (integer_literal) (integer_literal))
+        body: (block (expression_statement (identifier)))))))
+
+==================
+While statement
+==================
+
+fn while_loop() {
+    while condition {
+        x;
+    }
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (while_statement
+        condition: (identifier)
+        body: (block (expression_statement (identifier)))))))
+
+==================
+Loop statement
+==================
+
+fn infinite() {
+    loop {
+        break;
+    }
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (loop_statement
+        (block (break_statement))))))
+
+==================
+If expression
+==================
+
+fn conditionals() {
+    if x { 1 } else { 2 };
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement
+        (if_expression
+          condition: (identifier)
+          consequence: (block (integer_literal))
+          alternative: (block (integer_literal)))))))
+
+==================
+If else if chain
+==================
+
+fn chain() {
+    if a { 1 } else if b { 2 } else { 3 };
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement
+        (if_expression
+          condition: (identifier)
+          consequence: (block (integer_literal))
+          alternative: (if_expression
+            condition: (identifier)
+            consequence: (block (integer_literal))
+            alternative: (block (integer_literal))))))))
+
+==================
+Match expression
+==================
+
+fn matching() {
+    match x {
+        0 => a,
+        1 => b,
+        _ => c,
+    };
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement
+        (match_expression
+          value: (identifier)
+          (match_arm pattern: (match_pattern (integer_literal)) value: (identifier))
+          (match_arm pattern: (match_pattern (integer_literal)) value: (identifier))
+          (match_arm pattern: (match_pattern (pattern (wildcard_pattern))) value: (identifier)))))))
+
+==================
+Return statement
+==================
+
+fn returns() {
+    return;
+    return 42;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (return_statement)
+      (return_statement (integer_literal)))))
+
+==================
+Break and continue
+==================
+
+fn control() {
+    break;
+    continue;
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (break_statement)
+      (continue_statement))))

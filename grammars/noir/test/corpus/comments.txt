@@ -1,0 +1,68 @@
+==================
+Line comment
+==================
+
+// This is a comment
+fn foo() {}
+
+---
+
+(source_file
+  (line_comment)
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block)))
+
+==================
+Block comment
+==================
+
+/* Block comment */
+fn foo() {}
+
+---
+
+(source_file
+  (block_comment)
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block)))
+
+==================
+Inline comment
+==================
+
+fn foo() {
+    x; // inline
+}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block
+      (expression_statement (identifier))
+      (line_comment))))
+
+==================
+Multi-line block comment
+==================
+
+/*
+ * Multi-line
+ * block comment
+ */
+fn foo() {}
+
+---
+
+(source_file
+  (block_comment)
+  (function_definition
+    name: (identifier)
+    (parameters)
+    (block)))

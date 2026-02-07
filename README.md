@@ -10,6 +10,7 @@ Noir zero-knowledge language support for [Zed](https://zed.dev).
 - **Bracket matching** - Including generic angle brackets
 - **Auto-indentation** - Smart indentation for blocks and expressions
 - **Vim text objects** - Function, class, parameter, and block selections
+- **Runnable detection** - Detect `#[test]` functions and `main` for one-click execution
 
 ## Installation
 
@@ -35,14 +36,29 @@ git clone https://github.com/Hydepwns/zoir ~/.config/zed/extensions/zoir
 The extension automatically manages the `nargo` LSP binary:
 
 1. **PATH lookup** - Uses `nargo` from PATH if available (respects [noirup](https://noir-lang.org/docs/getting_started/installation/) installations)
-2. **Automatic download** - Downloads from GitHub releases if not found
+2. **Automatic download** - Downloads from GitHub releases if not found (macOS/Linux only)
 
-Install nargo manually with noirup:
+#### macOS / Linux
+
+Install nargo with noirup:
 
 ```bash
 curl -L https://raw.githubusercontent.com/noir-lang/noirup/refs/heads/main/install | bash
 noirup
 ```
+
+#### Windows
+
+Noir does not provide pre-built Windows binaries. You must build from source:
+
+1. Install [Rust](https://rustup.rs/)
+2. Clone and build nargo:
+   ```powershell
+   git clone https://github.com/noir-lang/noir
+   cd noir
+   cargo build --release -p nargo
+   ```
+3. Add `target\release` to your PATH
 
 ## Configuration
 
@@ -59,6 +75,29 @@ Configure the language server in your Zed settings (`~/.config/zed/settings.json
   }
 }
 ```
+
+### Running Tests
+
+To enable one-click test running, add task templates to `~/.config/zed/tasks.json`:
+
+```json
+[
+  {
+    "label": "Noir: Run Test",
+    "command": "nargo",
+    "args": ["test", "--exact", "$ZED_CUSTOM_run"],
+    "tags": ["noir-test"]
+  },
+  {
+    "label": "Noir: Execute",
+    "command": "nargo",
+    "args": ["execute"],
+    "tags": ["noir-main"]
+  }
+]
+```
+
+After adding these, you'll see run indicators next to `#[test]` functions and `main`.
 
 ## Noir Language
 

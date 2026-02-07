@@ -1,0 +1,122 @@
+==================
+Basic trait
+==================
+
+trait Drawable {
+    fn draw(self);
+}
+
+---
+
+(source_file
+  (trait_definition
+    name: (type_identifier)
+    (trait_body
+      (trait_function_declaration
+        name: (identifier)
+        (parameters
+          (parameter (self_parameter)))))))
+
+==================
+Trait with default implementation
+==================
+
+trait Default {
+    fn default() -> Self {
+        Self {}
+    }
+}
+
+---
+
+(source_file
+  (trait_definition
+    name: (type_identifier)
+    (trait_body
+      (function_definition
+        name: (identifier)
+        (parameters)
+        return_type: (type_identifier)
+        (block
+          (struct_expression
+            name: (type_identifier)))))))
+
+==================
+Basic impl block
+==================
+
+impl Point {
+    fn new(x: u32) -> Self {
+        Self { x }
+    }
+}
+
+---
+
+(source_file
+  (impl_block
+    type: (type_identifier)
+    (impl_body
+      (function_definition
+        name: (identifier)
+        (parameters
+          (parameter
+            (pattern (identifier))
+            (primitive_type)))
+        return_type: (type_identifier)
+        (block
+          (struct_expression
+            name: (type_identifier)
+            (field_initializer (identifier))))))))
+
+==================
+Trait impl
+==================
+
+impl Drawable for Point {
+    fn draw(self) {}
+}
+
+---
+
+(source_file
+  (impl_block
+    trait: (type_identifier)
+    type: (type_identifier)
+    (impl_body
+      (function_definition
+        name: (identifier)
+        (parameters
+          (parameter (self_parameter)))
+        (block)))))
+
+==================
+Generic impl
+==================
+
+impl<T> Wrapper<T> {
+    fn unwrap(self) -> T {
+        self.inner
+    }
+}
+
+---
+
+(source_file
+  (impl_block
+    (type_parameters
+      (type_parameter
+        name: (type_identifier)))
+    type: (generic_type
+      (type_identifier)
+      (type_arguments (type_identifier)))
+    (impl_body
+      (function_definition
+        name: (identifier)
+        (parameters
+          (parameter (self_parameter)))
+        return_type: (type_identifier)
+        (block
+          (field_expression
+            value: (self_expression)
+            field: (identifier)))))))

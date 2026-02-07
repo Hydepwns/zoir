@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code when working with this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
@@ -9,30 +9,26 @@ Zoir is a Zed editor extension providing Noir zero-knowledge language support. I
 ## Key Commands
 
 ```bash
+# One-time: add WASM target for building
+rustup target add wasm32-wasip1
+
 # Build extension for Zed
 cargo build --release --target wasm32-wasip1
 
-# Generate tree-sitter parser
-cd grammars/noir && npm install && npx tree-sitter generate
-
-# Test parser against a file
-cd grammars/noir && npx tree-sitter parse <file.nr>
-
 # Check Rust compilation
 cargo check --target wasm32-wasip1
+
+# Generate tree-sitter parser (from grammars/noir/)
+npm install && npx tree-sitter generate
+
+# Run grammar tests (from grammars/noir/)
+npm test
+
+# Parse a file to verify grammar (from grammars/noir/)
+npx tree-sitter parse <file.nr>
 ```
 
 ## Architecture
-
-### Extension Structure
-
-| Path | Purpose |
-|------|---------|
-| `extension.toml` | Zed extension manifest |
-| `src/lib.rs` | LSP binary management (nargo discovery/download) |
-| `grammars/noir/grammar.js` | Tree-sitter grammar definition |
-| `grammars/noir/queries/` | Grammar queries (highlights, locals) |
-| `languages/noir/` | Zed-specific language config and queries |
 
 ### LSP Integration (src/lib.rs)
 
@@ -46,6 +42,7 @@ Platform asset mapping:
 - macOS x86: `nargo-x86_64-apple-darwin.tar.gz`
 - Linux ARM64: `nargo-aarch64-unknown-linux-gnu.tar.gz`
 - Linux x86: `nargo-x86_64-unknown-linux-gnu.tar.gz`
+- Windows: Not available (noir-lang doesn't provide Windows binaries; users must build from source)
 
 ### Tree-sitter Grammar (grammars/noir/)
 
@@ -57,27 +54,35 @@ The grammar supports:
 
 ### Query Files
 
-**grammars/noir/queries/** - Used by tree-sitter:
-- `highlights.scm` - Syntax highlighting rules
-- `locals.scm` - Scope and definition tracking
-- `injections.scm` - Language injections (minimal)
-
-**languages/noir/** - Used by Zed:
-- `config.toml` - File associations, comments, brackets
-- `highlights.scm` - Zed-specific highlighting
-- `brackets.scm` - Bracket matching pairs
-- `outline.scm` - Document symbols (functions, structs, etc.)
-- `indents.scm` - Auto-indentation rules
-- `textobjects.scm` - Vim-style text object selections
+Two query locations serve different purposes:
+- `grammars/noir/queries/` - Used by tree-sitter (highlights, locals, injections)
+- `languages/noir/` - Used by Zed editor (config, highlights, brackets, outline, indents, textobjects)
 
 ## Development Notes
+
+### Test Corpus
+
+Grammar tests are in `grammars/noir/test/corpus/`. Each file covers a category:
+- `functions.txt` - function definitions, attributes, generics
+- `structs.txt` - struct definitions and fields
+- `traits.txt` - traits, impl blocks
+- `types.txt` - primitive, array, tuple, reference types
+- `expressions.txt` - binary, unary, call, closure expressions
+- `statements.txt` - let, for, if, match statements
+- `patterns.txt` - destructuring patterns
+- `modules.txt` - mod, use declarations
+- `literals.txt` - integers, strings, booleans
+- `comments.txt` - line and block comments
+- `zk_specific.txt` - assert, constrain, comptime, global
 
 ### Adding New Syntax
 
 1. Update `grammars/noir/grammar.js` with new rules
 2. Run `npx tree-sitter generate` to regenerate parser
-3. Test with `npx tree-sitter parse <file.nr>`
-4. Update query files if new node types need highlighting
+3. Add test cases to appropriate `test/corpus/*.txt` file
+4. Run `npm test` to verify grammar tests pass
+5. Test with `npx tree-sitter parse <file.nr>` - ERROR nodes indicate parsing failures
+6. Update query files if new node types need highlighting
 
 ### Grammar Conflicts
 
@@ -87,15 +92,11 @@ Conflicts are declared in `grammar.js` conflicts array. Current conflicts handle
 - `self` as expression vs keyword
 - Unary operators (`&`, `*`) vs reference/dereference expressions
 
-### Testing
+Known limitation: `Field` parses as `type_identifier` instead of `primitive_type` because it matches the `type_identifier` regex (`/[A-Z][a-zA-Z0-9_]*/`). This doesn't affect syntax highlighting since both are styled as types.
 
-Test the parser against real Noir code:
-```bash
-cd grammars/noir
-npx tree-sitter parse /path/to/noir/project/src/main.nr
-```
+### Future: Code Folding
 
-Check for ERROR nodes in output - these indicate parsing failures.
+Zed does not yet support `folds.scm` (see [Issue #22703](https://github.com/zed-industries/zed/issues/22703)). When support is added, create `languages/noir/folds.scm` targeting block, struct_body, impl_body, trait_body, and match_expression nodes.
 
 ## References
 

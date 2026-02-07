@@ -1,0 +1,95 @@
+==================
+Basic struct
+==================
+
+struct Point {
+    x: u32,
+    y: u32,
+}
+
+---
+
+(source_file
+  (struct_definition
+    name: (type_identifier)
+    (struct_body
+      (struct_field
+        name: (identifier)
+        type: (primitive_type))
+      (struct_field
+        name: (identifier)
+        type: (primitive_type)))))
+
+==================
+Public struct
+==================
+
+pub struct Public {}
+
+---
+
+(source_file
+  (struct_definition
+    (visibility_modifier)
+    name: (type_identifier)
+    (struct_body)))
+
+==================
+Generic struct
+==================
+
+struct Wrapper<T> {
+    inner: T,
+}
+
+---
+
+(source_file
+  (struct_definition
+    name: (type_identifier)
+    (type_parameters
+      (type_parameter
+        name: (type_identifier)))
+    (struct_body
+      (struct_field
+        name: (identifier)
+        type: (type_identifier)))))
+
+==================
+Struct with pub fields
+==================
+
+struct Mixed {
+    pub visible: u32,
+    hidden: bool,
+}
+
+---
+
+(source_file
+  (struct_definition
+    name: (type_identifier)
+    (struct_body
+      (struct_field
+        (visibility_modifier)
+        name: (identifier)
+        type: (primitive_type))
+      (struct_field
+        name: (identifier)
+        type: (primitive_type)))))
+
+==================
+Struct with attribute
+==================
+
+#[test]
+struct Derived {}
+
+---
+
+(source_file
+  (struct_definition
+    (attribute
+      (attribute_item (identifier)))
+    name: (type_identifier)
+    (struct_body)))

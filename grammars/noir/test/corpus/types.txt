@@ -1,0 +1,171 @@
+==================
+Primitive types
+==================
+
+fn types(
+    a: bool,
+    b: u8,
+    c: u32,
+    d: u64,
+    e: i8,
+    f: i32,
+    g: str,
+) {}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters
+      (parameter (pattern (identifier)) (primitive_type))
+      (parameter (pattern (identifier)) (primitive_type))
+      (parameter (pattern (identifier)) (primitive_type))
+      (parameter (pattern (identifier)) (primitive_type))
+      (parameter (pattern (identifier)) (primitive_type))
+      (parameter (pattern (identifier)) (primitive_type))
+      (parameter (pattern (identifier)) (primitive_type)))
+    (block)))
+
+==================
+Array type
+==================
+
+fn arrays(x: [u8; 3]) {}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters
+      (parameter
+        (pattern (identifier))
+        (array_type
+          element: (primitive_type)
+          length: (integer_literal))))
+    (block)))
+
+==================
+Slice type
+==================
+
+fn slices(x: [u8]) {}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters
+      (parameter
+        (pattern (identifier))
+        (slice_type (primitive_type))))
+    (block)))
+
+==================
+Tuple type
+==================
+
+fn tuples(x: (u32, bool)) {}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters
+      (parameter
+        (pattern (identifier))
+        (tuple_type
+          (primitive_type)
+          (primitive_type))))
+    (block)))
+
+==================
+Reference types
+==================
+
+fn refs(x: &u32, y: &mut u32) {}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters
+      (parameter
+        (pattern (identifier))
+        (reference_type (primitive_type)))
+      (parameter
+        (pattern (identifier))
+        (mutable_reference_type (primitive_type))))
+    (block)))
+
+==================
+Function type
+==================
+
+fn higher_order(f: fn(u32) -> bool) {}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters
+      (parameter
+        (pattern (identifier))
+        (function_type
+          (primitive_type)
+          (primitive_type))))
+    (block)))
+
+==================
+Generic type
+==================
+
+fn generic(x: Vec<u8>) {}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters
+      (parameter
+        (pattern (identifier))
+        (generic_type
+          (type_identifier)
+          (type_arguments (primitive_type)))))
+    (block)))
+
+==================
+Unit type
+==================
+
+fn unit() -> () {}
+
+---
+
+(source_file
+  (function_definition
+    name: (identifier)
+    (parameters)
+    return_type: (unit_type)
+    (block)))
+
+==================
+Type alias
+==================
+
+type Bytes32 = [u8; 32];
+
+---
+
+(source_file
+  (type_alias
+    name: (type_identifier)
+    type: (array_type
+      element: (primitive_type)
+      length: (integer_literal))))
