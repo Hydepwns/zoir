@@ -47,7 +47,7 @@ Platform asset mapping:
 ### Tree-sitter Grammar (grammars/noir/)
 
 The grammar supports:
-- Keywords: `fn`, `struct`, `impl`, `mod`, `use`, `let`, `mut`, `pub`, `for`, `if`, `else`, `match`, `return`, `global`, `comptime`, `unconstrained`
+- Keywords: `fn`, `struct`, `enum`, `impl`, `mod`, `use`, `let`, `mut`, `pub`, `for`, `if`, `else`, `match`, `return`, `global`, `comptime`, `unconstrained`
 - Types: `Field`, `bool`, `u8`-`u128`, `i8`-`i128`, `str`, arrays, tuples, generics
 - ZK-specific: `assert`, `assert_eq`, `constrain`, `#[recursive]`, visibility on parameters (`pub`)
 - Operators, comments, attributes, closures, ranges
@@ -65,6 +65,7 @@ Two query locations serve different purposes:
 Grammar tests are in `grammars/noir/test/corpus/`. Each file covers a category:
 - `functions.txt` - function definitions, attributes, generics
 - `structs.txt` - struct definitions and fields
+- `enums.txt` - enum definitions with unit, tuple, struct variants
 - `traits.txt` - traits, impl blocks
 - `types.txt` - primitive, array, tuple, reference types
 - `expressions.txt` - binary, unary, call, closure expressions
