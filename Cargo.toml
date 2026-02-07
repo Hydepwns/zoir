@@ -1,0 +1,18 @@
+[package]
+name = "zoir"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Noir zero-knowledge language support for Zed"
+repository = "https://github.com/Hydepwns/zoir"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+zed_extension_api = "0.5"
+
+[profile.release]
+lto = true
+opt-level = "z"
+strip = true
