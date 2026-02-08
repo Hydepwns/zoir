@@ -21,12 +21,10 @@ impl ZoirExtension {
             if let Some(path) = worktree.which("nargo") {
                 return Ok(path);
             }
-            return Err(
-                "Noir does not provide pre-built Windows binaries. \
+            return Err("Noir does not provide pre-built Windows binaries. \
                 Please build nargo from source and add it to your PATH: \
                 https://noir-lang.org/docs/getting_started/installation/"
-                    .to_string(),
-            );
+                .to_string());
         }
 
         // Try PATH first (respects noirup installations)
@@ -35,7 +33,11 @@ impl ZoirExtension {
         }
 
         // Try cached path
-        if let Some(path) = self.cached_binary_path.as_ref().filter(|p| fs::metadata(p).is_ok()) {
+        if let Some(path) = self
+            .cached_binary_path
+            .as_ref()
+            .filter(|p| fs::metadata(p).is_ok())
+        {
             return Ok(path.clone());
         }
 
