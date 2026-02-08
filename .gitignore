@@ -18,3 +18,4 @@ grammars/noir/tree-sitter.json
 *.swo
 *~
 .DS_Store
+.claude/

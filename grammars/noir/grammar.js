@@ -82,14 +82,20 @@ module.exports = grammar({
         $.block,
       ),
 
-    visibility_modifier: (_) => "pub",
+    visibility_modifier: ($) =>
+      seq("pub", optional(seq("(", $.visibility_restriction, ")"))),
+
+    visibility_restriction: (_) => choice("crate", "super"),
+
+    // Parameter visibility is just "pub" without restrictions to avoid conflict with tuple types
+    parameter_visibility: (_) => "pub",
 
     parameters: ($) => seq("(", comma_list($.parameter), ")"),
 
     parameter: ($) =>
       choice(
         $.self_parameter,
-        seq($.pattern, optional(seq(":", optional($.visibility_modifier), $._type))),
+        seq($.pattern, optional(seq(":", optional($.parameter_visibility), $._type))),
       ),
 
     self_parameter: ($) => seq(optional("&"), optional("mut"), "self"),
@@ -328,7 +334,13 @@ module.exports = grammar({
     mutable_reference_type: ($) => seq("&", "mut", $._type),
 
     array_type: ($) =>
-      seq("[", field("element", $._type), ";", field("length", $._expression), "]"),
+      seq(
+        "[",
+        field("element", $._type),
+        ";",
+        field("length", choice($._expression, $.type_identifier)),
+        "]",
+      ),
 
     slice_type: ($) => seq("[", $._type, "]"),
 
@@ -532,7 +544,7 @@ module.exports = grammar({
             seq(
               field("left", $._expression),
               field("operator", operator),
-              field("right", $._expression),
+              field("right", choice($._expression, $.type_identifier)),
             ),
           ),
         ),
@@ -548,12 +560,15 @@ module.exports = grammar({
           field("receiver", $._expression),
           ".",
           field("method", $.identifier),
-          optional($.type_arguments),
+          optional($.turbofish),
           "(",
           comma_list($._expression),
           ")",
         ),
       ),
+
+    // Turbofish syntax for explicit type arguments: ::<T>
+    turbofish: ($) => seq("::", $.type_arguments),
 
     field_expression: ($) =>
       prec(
@@ -569,7 +584,14 @@ module.exports = grammar({
       prec(PREC.call, seq(field("value", $._expression), "[", field("index", $._expression), "]")),
 
     array_expression: ($) =>
-      seq("[", choice(comma_list1($._expression), seq($._expression, ";", $._expression)), "]"),
+      seq(
+        "[",
+        choice(
+          comma_list1($._expression),
+          seq($._expression, ";", choice($._expression, $.type_identifier)),
+        ),
+        "]",
+      ),
 
     // Tuple requires at least 2 elements (single element would be parenthesized_expression)
     tuple_expression: ($) => seq("(", $._expression, ",", comma_list($._expression), ")"),

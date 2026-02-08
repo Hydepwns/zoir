@@ -34,6 +34,11 @@
 ] @keyword
 
 (visibility_modifier) @keyword
+(parameter_visibility) @keyword
+(visibility_restriction) @keyword
+
+; Turbofish :: is punctuation
+(turbofish "::" @punctuation.delimiter)
 
 [
   "assert"

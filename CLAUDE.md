@@ -93,7 +93,24 @@ Conflicts are declared in `grammar.js` conflicts array. Current conflicts handle
 - `self` as expression vs keyword
 - Unary operators (`&`, `*`) vs reference/dereference expressions
 
-Known limitation: `Field` parses as `type_identifier` instead of `primitive_type` because it matches the `type_identifier` regex (`/[A-Z][a-zA-Z0-9_]*/`). This doesn't affect syntax highlighting since both are styled as types.
+### Visibility Modifiers
+
+Two visibility rules exist to avoid parsing conflicts:
+- `visibility_modifier` - supports `pub`, `pub(crate)`, `pub(super)` for items
+- `parameter_visibility` - just `pub` for function parameters (avoids conflict with tuple types like `pub (Field, Field)`)
+
+### Const Generics and Turbofish
+
+- Const generic parameters use `let` syntax: `<T, let N: u32>`
+- Array lengths and repeat counts accept `type_identifier` for const generics: `[T; MaxLen]`
+- Binary expression right operands accept `type_identifier` for comparisons: `len < MaxLen`
+- Method calls with explicit generics use turbofish syntax: `foo.bar::<T>()` (not `foo.bar<T>()`)
+  - This disambiguates `foo.bar < y` (comparison) from generic method calls
+
+### Known Limitations
+
+- `Field` parses as `type_identifier` instead of `primitive_type` because it matches the `type_identifier` regex (`/[A-Z][a-zA-Z0-9_]*/`). This doesn't affect syntax highlighting since both are styled as types.
+- Some advanced stdlib patterns may not parse (complex trait bounds, certain nested generics)
 
 ### Future: Code Folding
 

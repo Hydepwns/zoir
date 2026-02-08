@@ -45,5 +45,16 @@
     "build-wasm": "tree-sitter build --wasm",
     "test": "tree-sitter test",
     "parse": "tree-sitter parse"
-  }
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.noir",
+      "file-types": [
+        "nr"
+      ],
+      "highlights": "queries/highlights.scm",
+      "locals": "queries/locals.scm",
+      "injections": "queries/injections.scm"
+    }
+  ]
 }

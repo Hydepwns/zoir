@@ -42,6 +42,20 @@ pub mod public_mod;
     name: (identifier)))
 
 ==================
+Pub crate module
+==================
+
+pub(crate) mod internal;
+
+---
+
+(source_file
+  (module_declaration
+    (visibility_modifier
+      (visibility_restriction))
+    name: (identifier)))
+
+==================
 Use declaration
 ==================
 

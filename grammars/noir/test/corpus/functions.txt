@@ -70,7 +70,7 @@ fn main(x: u32, y: pub u32) {}
         (primitive_type))
       (parameter
         (pattern (identifier))
-        (visibility_modifier)
+        (parameter_visibility)
         (primitive_type)))
     (block)))
 
