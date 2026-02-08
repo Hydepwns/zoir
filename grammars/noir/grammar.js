@@ -21,7 +21,9 @@ const PREC = {
 };
 
 // Comma-separated list helpers with optional trailing comma
+/** @param {RuleOrLiteral} item */
 const comma_list1 = (item) => seq(item, repeat(seq(",", item)), optional(","));
+/** @param {RuleOrLiteral} item */
 const comma_list = (item) => optional(comma_list1(item));
 
 module.exports = grammar({
@@ -82,8 +84,7 @@ module.exports = grammar({
         $.block,
       ),
 
-    visibility_modifier: ($) =>
-      seq("pub", optional(seq("(", $.visibility_restriction, ")"))),
+    visibility_modifier: ($) => seq("pub", optional(seq("(", $.visibility_restriction, ")"))),
 
     visibility_restriction: (_) => choice("crate", "super"),
 
@@ -234,18 +235,9 @@ module.exports = grammar({
     use_list: ($) => seq("{", comma_list($.use_tree), "}"),
 
     scoped_use_list: ($) =>
-      seq(
-        choice($.identifier, $.scoped_identifier, "crate", "super", "self"),
-        "::",
-        $.use_list,
-      ),
+      seq(choice($.identifier, $.scoped_identifier, "crate", "super", "self"), "::", $.use_list),
 
-    use_as_clause: ($) =>
-      seq(
-        choice($.identifier, $.scoped_identifier),
-        "as",
-        $.identifier,
-      ),
+    use_as_clause: ($) => seq(choice($.identifier, $.scoped_identifier), "as", $.identifier),
 
     // Global declaration
     global_declaration: ($) =>
@@ -367,7 +359,12 @@ module.exports = grammar({
     tuple_pattern: ($) => seq("(", comma_list($.pattern), ")"),
 
     struct_pattern: ($) =>
-      seq(choice($.type_identifier, $.scoped_type_identifier), "{", comma_list($.field_pattern), "}"),
+      seq(
+        choice($.type_identifier, $.scoped_type_identifier),
+        "{",
+        comma_list($.field_pattern),
+        "}",
+      ),
 
     field_pattern: ($) => choice(seq($.identifier, ":", $.pattern), $.identifier, ".."),
 
@@ -508,7 +505,7 @@ module.exports = grammar({
 
     binary_expression: ($) =>
       choice(
-        ...[
+        .../** @type {[string, number][]} */ ([
           ["+", PREC.additive],
           ["-", PREC.additive],
           ["*", PREC.multiplicative],
@@ -538,7 +535,7 @@ module.exports = grammar({
           ["^=", PREC.assign],
           ["<<=", PREC.assign],
           [">>=", PREC.assign],
-        ].map(([operator, precedence]) =>
+        ]).map(([operator, precedence]) =>
           prec.left(
             precedence,
             seq(
@@ -632,7 +629,13 @@ module.exports = grammar({
     closure_expression: ($) =>
       prec.left(
         PREC.call,
-        seq("|", comma_list($.closure_parameter), "|", optional(seq("->", $._type)), choice($.block, $._expression)),
+        seq(
+          "|",
+          comma_list($.closure_parameter),
+          "|",
+          optional(seq("->", $._type)),
+          choice($.block, $._expression),
+        ),
       ),
 
     closure_parameter: ($) => seq(optional("mut"), $.pattern, optional(seq(":", $._type))),
