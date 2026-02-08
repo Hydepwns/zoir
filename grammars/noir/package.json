@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-noir",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tree-sitter grammar for the Noir zero-knowledge language",
   "repository": {
     "type": "git",

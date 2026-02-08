@@ -1,7 +1,7 @@
 id = "zoir"
 name = "Zoir"
 description = "Noir zero-knowledge language support for Zed"
-version = "0.1.0"
+version = "0.1.1"
 schema_version = 1
 authors = ["droo <droo@hydepwns.dev>"]
 repository = "https://github.com/Hydepwns/zoir"
