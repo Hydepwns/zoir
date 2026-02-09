@@ -1,7 +1,7 @@
 id = "zoir"
 name = "Zoir"
 description = "Noir zero-knowledge language support for Zed"
-version = "0.1.2"
+version = "0.1.3"
 schema_version = 1
 authors = ["droo <droo@hydepwns.dev>"]
 repository = "https://github.com/Hydepwns/zoir"
@@ -9,7 +9,7 @@ license = "MIT OR Apache-2.0"
 
 [grammars.noir]
 repository = "https://github.com/Hydepwns/tree-sitter-noir"
-commit = "5919429e671852d4e32cad47439606ddd198c278"
+commit = "1a6db6770c1307a3c8d318c6b8eea082602e4599"
 
 [language_servers.nargo]
 name = "nargo"
