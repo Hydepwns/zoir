@@ -11,6 +11,10 @@ grammars/noir/*.wasm
 grammars/noir/package-lock.json
 grammars/noir/tree-sitter.json
 
+# Extension build artifacts
+extension.wasm
+grammars/*.wasm
+
 # Editor
 .vscode/
 .idea/
