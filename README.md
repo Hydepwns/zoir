@@ -118,27 +118,16 @@ fn test_main() {
 }
 ```
 
+## Tree-sitter Grammar
+
+Syntax highlighting is powered by [tree-sitter-noir](https://github.com/Hydepwns/tree-sitter-noir).
+
 ## Development
 
 ### Build the extension
 
 ```bash
 cargo build --release --target wasm32-wasip1
-```
-
-### Generate the tree-sitter parser
-
-```bash
-cd grammars/noir
-npm install
-npx tree-sitter generate
-```
-
-### Test the grammar
-
-```bash
-cd grammars/noir
-npx tree-sitter test
 ```
 
 ## License

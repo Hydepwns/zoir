@@ -9,7 +9,7 @@ license = "MIT OR Apache-2.0"
 
 [grammars.noir]
 repository = "https://github.com/Hydepwns/tree-sitter-noir"
-commit = "f62b11480b47649b62c1b5a88b4b87453ed6b54b"
+commit = "5919429e671852d4e32cad47439606ddd198c278"
 
 [language_servers.nargo]
 name = "nargo"
